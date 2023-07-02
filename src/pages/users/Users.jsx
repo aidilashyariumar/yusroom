@@ -14,13 +14,12 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import { deleteRoom, getAllRoom } from '../../services/room';
+import { deleteRoom, getAllUsers } from '../../services/user';
 import {useNavigate} from 'react-router';
-import './style.css'
 
 
 
-const RoomPage = () => {
+const UsersPage = () => {
   const navigate = useNavigate();
   
   const [data, setData] = useState([]);
@@ -32,7 +31,7 @@ const RoomPage = () => {
 
   const getData = async () => {
     try {
-      const response = await getAllRoom();
+      const response = await getAllUsers();
       setData(response.data);
     } catch (error) {
       console.log(error);
@@ -43,7 +42,7 @@ const RoomPage = () => {
 
     // setSelectedData(e.id)
 
-    navigate(`/edit-room/${id}`)
+    navigate(`/edit-user/${id}`)
   }
 
   const handleDelete = async (id) => {
@@ -59,24 +58,23 @@ const RoomPage = () => {
 
 
   return (
-    <Box >
-      <h1>Room</h1>
-    <Box className="container" sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1, width:'100%' }}>
+    <Box>
+     <h1>Users</h1>
+    <Box sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1 , width:'100%'}}>
       <Grid container spacing={2} sx={{ m: 1 }}>
         <Grid xs={4}>
           {/* Search Component */}
         </Grid>
         <Grid container justifyContent="flex-end">
-          <Grid item className='add'>
+        <Grid item className="add">
           <Button
-            sx={{ borderColor: 'white', color: 'white'  }}
+            sx={{ borderColor: 'white', color: 'white', }}
             variant="outlined"
-            
-            onClick={() => {navigate("/add-room")}}
+            onClick={() => {navigate("/add-user")}}
           >
             <AddIcon />
           </Button>
-          </Grid>
+        </Grid>
         </Grid>
       </Grid>
       <TableContainer component={Paper} sx={{ maxHeight: '300px' }}>
@@ -84,10 +82,9 @@ const RoomPage = () => {
           <TableHead sx={{ backgroundColor: 'blue' }}>
             <TableRow>
               <TableCell>No</TableCell>
+              <TableCell>Username</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>image</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Aksi</TableCell>
             </TableRow>
           </TableHead>
@@ -95,18 +92,10 @@ const RoomPage = () => {
             {data.map((item,index) => (
               <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell>{index + 1}</TableCell>
+                <TableCell>{item.username}</TableCell>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>
-                  <img src={`${item.image}`} width={80} alt="Room" />
-                </TableCell>
-                <TableCell>{item.description}</TableCell>
-                <TableCell>
-                  {item.is_active === 1 ? (
-                    <Box sx={{ backgroundColor: 'pink', color: 'red', width: '60px', height: '30px', padding: 0.5, borderRadius: '5px' }}>tersedia</Box>
-                  ) : (
-                    <Box sx={{ backgroundColor: 'silver', color: 'white', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }}>tidak Tersedia</Box>
-                  )}
-                </TableCell>
+                <TableCell>{item.email}</TableCell>
+                
                 <TableCell>
                 <Button
                   icon={<EditIcon />}
@@ -131,8 +120,9 @@ const RoomPage = () => {
         </Table>
       </TableContainer>
     </Box>
+     
     </Box>
   );
 };
 
-export default RoomPage;
+export default UsersPage;

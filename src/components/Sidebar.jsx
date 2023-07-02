@@ -133,7 +133,7 @@ export default function MiniDrawer() {
                 <ListItemText primary="Meeting Room" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/rooms')}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/time')}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,

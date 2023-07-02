@@ -1,39 +1,111 @@
-import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+import axios from "../../helper/axios";
+import { Box, Button, TextField } from "@mui/material";
 
-const EditRoom = ({ initialData, onSave }) => {
-  const [data, setData] = useState(initialData);
+const EditRoom = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const handleChange = (e) => {
-    setData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
+  const [data, setData] = useState({
+    name: "",
+    description: "",
+    is_active: "",
+  });
+  const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(() => {
+    // Fetch room data from the server based on the ID
+    const fetchRoomData = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/admin/room/${id}`
+        );
+        const roomData = response.data.data;
+        setData(roomData);
+      } catch (error) {
+        console.error("Terjadi kesalahan saat mengambil data ruangan:", error);
+      }
+    };
+
+    fetchRoomData();
+  }, [id]);
+
+  const handleInputChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(data);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    if (file) {
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        setImageUrl(reader.result);
+      };
+  
+      reader.readAsDataURL(file);
+    }
   };
+
+  const handleUpdateData = async () => {
+    try {
+      // Create form data
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("is_active", data.is_active);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
+      const response = await axios.put(
+        `http://127.0.0.1:8000/api/admin/room/${id}`,
+        formData
+      );
+      console.log("Data berhasil diperbarui:", response.data);
+      navigate("/rooms");
+    } catch (error) {
+      console.error("Terjadi kesalahan saat memperbarui data:", error);
+    }
+  };
+
+  if (!data) {
+    return <div>Loading...</div>; // Tambahkan tampilan loading jika data belum tersedia
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Box>
+      <h2>Edit Data Ruangan</h2>
       <TextField
+        label="Nama"
         name="name"
-        label="Name"
-        value={data.name}
-        onChange={handleChange}
+        value={data.name || ""}
+        onChange={handleInputChange}
+        fullWidth
       />
       <TextField
-        name="email"
-        label="Email"
-        value={data.email}
-        onChange={handleChange}
+        label="Deskripsi"
+        name="description"
+        value={data.description || ""}
+        onChange={handleInputChange}
+        fullWidth
       />
-      <Button type="submit" variant="contained" color="primary">
-        Save
+      <TextField
+        label="Status"
+        name="is_active"
+        value={data.is_active || ""}
+        onChange={handleInputChange}
+        fullWidth
+      />
+      <input type="file" accept="image/*" onChange={handleImageChange} />
+      {imageUrl && <img src={imageUrl} alt="Room" />}
+      <Button variant="contained" onClick={handleUpdateData}>
+        Perbarui
       </Button>
-    </form>
+    </Box>
   );
 };
 

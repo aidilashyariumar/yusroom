@@ -1,0 +1,19 @@
+.box-add{
+    box-shadow: 1px 1px 5px rgb(109, 108, 108) ;
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    /* border: 0 auto 0 auto; */
+    margin: 10px 0 0 0;
+}
+.box-title{
+    border-radius: 10px;
+    width: 90%;
+    color: white;
+    background-color: rgb(3, 3, 179);
+    padding: 1px 5px;
+    margin-bottom: -20px;
+}
+.add{
+    padding: 0 50px 0 0;
+}

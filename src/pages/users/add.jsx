@@ -3,22 +3,17 @@ import { Button, TextField, Box } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
-const AddRoom = () => {
+const AddUser = () => {
   const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileUploadChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedImage(URL.createObjectURL(file));
-    setData({ ...data, file });
-  };
+  
 
   const [data, setData] = useState({
+    username: '',
     name: '',
-    file: null,
-    description: '',
-    is_active: '',
+    email: '',
+    is_admin: '',
   });
 
   const handleInputChange = (e) => {
@@ -27,16 +22,16 @@ const AddRoom = () => {
 
   const handleSaveData = async () => {
     try {
-      setIsLoading(true);
+    //   setIsLoading(true);
 
       const formData = new FormData();
+      formData.append('username', data.username);
       formData.append('name', data.name);
-      formData.append('image', data.file);
-      formData.append('description', data.description);
-      formData.append('is_active', data.is_active);
+      formData.append('email', data.email);
+      formData.append('password', data.password);
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/admin/room',
+        'http://127.0.0.1:8000/api/admin/user',
         formData,
         {
           headers: {
@@ -50,13 +45,13 @@ const AddRoom = () => {
       setIsLoading(false);
 
       setData({
+        username: '',
         name: '',
-        file: null,
-        description: '',
-        is_active: '',
+        email: '',
+        password: '',
       });
 
-      navigate('/rooms');
+      navigate('/users');
     } catch (error) {
       console.error('Terjadi kesalahan saat menambahkan data:', error);
     }
@@ -68,20 +63,10 @@ const AddRoom = () => {
         <h2>Tambah Data</h2>
       </Box>
       <Box className="box-add">
+        <TextField sx={{ mt: 2 }} label="Username" name="username" value={data.username} onChange={handleInputChange} fullWidth />
         <TextField sx={{ mt: 2 }} label="Name" name="name" value={data.name} onChange={handleInputChange} fullWidth />
-        <Box sx={{ mt: 2 }}>
-          <div>
-            <label htmlFor="image">Image</label>
-            <input name="image" type="file" onChange={handleFileUploadChange} />
-            {selectedImage && (
-              <div>
-                <img width={100} src={selectedImage} alt="Preview" />
-              </div>
-            )}
-          </div>
-        </Box>
-        <TextField sx={{ mt: 2 }} label="Description" name="description" value={data.description} onChange={handleInputChange} fullWidth />
-        <TextField sx={{ mt: 2 }} label="Status" name="is_active" value={data.is_active} onChange={handleInputChange} fullWidth />
+        <TextField sx={{ mt: 2 }} label="Email" name="email" value={data.email} onChange={handleInputChange} fullWidth />
+        <TextField sx={{ mt: 2 }} label="Status" name="password" value={data.password} onChange={handleInputChange} fullWidth />
 
         <Button sx={{ my: 2 }} variant="contained" disabled={isLoading} onClick={handleSaveData}>
           {isLoading ? 'Loading...' : 'Kirim'}
@@ -91,4 +76,4 @@ const AddRoom = () => {
   );
 };
 
-export default AddRoom;
+export default AddUser;
