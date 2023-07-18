@@ -14,7 +14,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import { deleteRoom, getAllTime } from '../../services/time';
+import { deleteRoom, deleteTime, getAllTime } from '../../services/time';
 import {useNavigate} from 'react-router';
 import './style.css'
 
@@ -48,7 +48,7 @@ const TimePage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteRoom(id);
+      await deleteTime(id);
       console.log('Data deleted successfully');
       getData();
     } catch (error) {
@@ -78,39 +78,40 @@ const TimePage = () => {
         </Grid>
         </Grid>
       </Grid>
-      <TableContainer component={Paper} sx={{ maxHeight: '300px' }}>
-        <Table aria-label="YUSROOM" stickyHeader>
+      <TableContainer component={Paper} sx={{ maxHeight: '300px' ,display: 'flex', justifyContent: 'center' }}>
+        <Table aria-label="YUSROOM" stickyHeader width='80%' >
           <TableHead sx={{ backgroundColor: 'blue' }}>
-            <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell>start time</TableCell>
-              <TableCell>end time</TableCell>
-              <TableCell>Aksi</TableCell>
+            <TableRow >
+              <TableCell align="center" >No</TableCell>
+              <TableCell align="center">start time</TableCell>
+              <TableCell align="center">end time</TableCell>
+              <TableCell align="center">Aksi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item,index) => (
               <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{item.start_time}</TableCell>
-                <TableCell>{item.end_time}</TableCell>
-                <TableCell>
+                <TableCell align="center">{index + 1}</TableCell>
+                <TableCell align="center">{item.start_time}</TableCell>
+                <TableCell align="center" >{item.end_time}</TableCell>
+                <TableCell align="center">
                 <Button
-                  icon={<EditIcon />}
+                  startIcon={<EditIcon />}
                   className="btn-edit"
                   onClick={() => editData(item.id)}
+                  sx={{backgroundColor:'orange', color:'white',marginRight:2}}
                 >
                   Edit
                 </Button>
-
-                    <Button
+                <Button
                     variant="contained"
                     sx={{backgroundColor:'red'}}
-                    startIcon={<DeleteIcon />}
+                    startIcon={<DeleteIcon/>}
+                    className='del'
                     onClick={() => handleDelete(item.id)}
                   >
                     Delete
-                  </Button>
+                </Button>
                 </TableCell>
               </TableRow>
             ))}

@@ -36,16 +36,9 @@ const EditUser = () => {
 
   const handleUpdateData = async () => {
     try {
-      // Create form data
-      const formData = new FormData();
-      formData.append("username", data.username);
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-    
-   
       const response = await axios.patch(
         `http://127.0.0.1:8000/api/admin/user/${id}`,
-        formData
+        data
       );
       console.log("Data berhasil diperbarui:", response.data);
       navigate("/users");
@@ -81,7 +74,7 @@ const EditUser = () => {
       />
       
       <Button variant="contained" onClick={handleUpdateData}>
-        Perbarui
+        Update
       </Button>
     </Box>
   );

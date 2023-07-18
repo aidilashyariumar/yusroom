@@ -64,7 +64,7 @@ const AddRoom = () => {
 
   return (
     <Box>
-      <Box className="box-title" sx={{ backgroundColor: 'blue', marginBottom: '-20px' }} width="90%">
+      <Box className="box-title" sx={{ marginBottom: '-20px' }} >
         <h2>Tambah Data</h2>
       </Box>
       <Box className="box-add">

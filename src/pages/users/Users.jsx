@@ -81,26 +81,27 @@ const UsersPage = () => {
         <Table aria-label="YUSROOM" stickyHeader>
           <TableHead sx={{ backgroundColor: 'blue' }}>
             <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Aksi</TableCell>
+              <TableCell align='center'>No</TableCell>
+              <TableCell align='center'>Username</TableCell>
+              <TableCell align='center'>Name</TableCell>
+              <TableCell align='center'>Email</TableCell>
+              <TableCell align='center'>Aksi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item,index) => (
               <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{item.username}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.email}</TableCell>
+                <TableCell align='center'>{index + 1}</TableCell>
+                <TableCell align='center'>{item.username}</TableCell>
+                <TableCell align='center'>{item.name}</TableCell>
+                <TableCell align='center'>{item.email}</TableCell>
                 
-                <TableCell>
+                <TableCell align='center'>
                 <Button
-                  icon={<EditIcon />}
+                  startIcon={<EditIcon/>}
                   className="btn-edit"
                   onClick={() => editData(item.id)}
+                  sx={{backgroundColor:'orange', color:'white',marginRight:2}}
                 >
                   Edit
                 </Button>
@@ -110,6 +111,7 @@ const UsersPage = () => {
                     sx={{backgroundColor:'red'}}
                     startIcon={<DeleteIcon />}
                     onClick={() => handleDelete(item.id)}
+                    className='del'
                   >
                     Delete
                   </Button>

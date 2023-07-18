@@ -83,34 +83,35 @@ const RoomPage = () => {
         <Table aria-label="YUSROOM" stickyHeader>
           <TableHead sx={{ backgroundColor: 'blue' }}>
             <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>image</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Aksi</TableCell>
+              <TableCell align="center">No</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">image</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Aksi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item,index) => (
               <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>
+                <TableCell align="center">{index + 1}</TableCell>
+                <TableCell align="center">{item.name}</TableCell>
+                <TableCell align="center">
                   <img src={`${item.image}`} width={80} alt="Room" />
                 </TableCell>
-                <TableCell>{item.description}</TableCell>
-                <TableCell>
+                <TableCell align="center">{item.description}</TableCell>
+                <TableCell align="center">
                   {item.is_active === 1 ? (
-                    <Box sx={{ backgroundColor: 'pink', color: 'red', width: '60px', height: '30px', padding: 0.5, borderRadius: '5px' }}>tersedia</Box>
+                    <Box sx={{ backgroundColor: 'pink', color: 'red', width: '60px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">tersedia</Box>
                   ) : (
-                    <Box sx={{ backgroundColor: 'silver', color: 'white', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }}>tidak Tersedia</Box>
+                    <Box sx={{ backgroundColor: 'silver', color: 'white', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">tidak Tersedia</Box>
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                 <Button
-                  icon={<EditIcon />}
+                  startIcon={<EditIcon />}
                   className="btn-edit"
+                  sx={{backgroundColor:'orange', color:'white',marginRight:2}}
                   onClick={() => editData(item.id)}
                 >
                   Edit
@@ -121,6 +122,7 @@ const RoomPage = () => {
                     sx={{backgroundColor:'red'}}
                     startIcon={<DeleteIcon />}
                     onClick={() => handleDelete(item.id)}
+                    className='del'
                   >
                     Delete
                   </Button>

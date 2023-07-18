@@ -10,10 +10,10 @@ const getAllTime = async () => {
     }
 }
 
-const deleteRoom = async (id) => {
+const deleteTime = async (id) => {
     console.log('id: '+JSON.stringify(id));
     try {
-        const response = await axios.delete(`/admin/room/${id}`)
+        const response = await axios.delete(`/admin/time/${id}`)
         return response.data
 
     } catch (e) {
@@ -22,4 +22,4 @@ const deleteRoom = async (id) => {
     }
 
 }
-export {getAllTime,deleteRoom}
+export {getAllTime,deleteTime}

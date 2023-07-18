@@ -5,6 +5,7 @@ import { Box, Button, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { TimePicker } from "@mui/x-date-pickers";
+import { Block } from "@mui/icons-material";
 
 const AddTime = () => {
   const navigate = useNavigate();
@@ -42,16 +43,18 @@ const AddTime = () => {
   };
 
   return (
-    <Box>
+    <Box >
+      <LocalizationProvider dateAdapter={AdapterDayjs} >
       <h2>Tambah Data Waktu</h2>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-     
-        <TimePicker
+      <Box sx={{m:5}}>
+        <TimePicker  fullWidth
           label="Start Time"
           value={startTime}
           onChange={handleStartTimeChange}
           format="HH:mm:ss"
           renderInput={(params) => <TextField {...params} />}
+          sx={{ display: 'block', m:2 ,width:'60%'}}
+          
         />
         <TimePicker
           label="End Time"
@@ -59,11 +62,14 @@ const AddTime = () => {
           onChange={handleEndTimeChange}
           format="HH:mm:ss"
           renderInput={(params) => <TextField {...params} />}
+          sx={{ display: 'block',m:2 ,width:'60%'}}
+          fullWidth
         />
-      </LocalizationProvider>
-      <Button variant="contained" onClick={handleAddData}>
+      <Button variant="contained" sx={{m:2 ,width:'60%'}} onClick={handleAddData} fullWidth>
         Tambah
       </Button>
+      </Box>
+      </LocalizationProvider>
     </Box>
   );
 };

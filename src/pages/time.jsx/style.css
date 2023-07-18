@@ -1,6 +1,6 @@
 .box-add{
     box-shadow: 1px 1px 5px rgb(109, 108, 108) ;
-    width: 90%;
+
     padding: 10px;
     border-radius: 10px;
     /* border: 0 auto 0 auto; */
@@ -8,7 +8,7 @@
 }
 .box-title{
     border-radius: 10px;
-    width: 90%;
+    
     color: white;
     background-color: rgb(3, 3, 179);
     padding: 1px 5px;
@@ -16,4 +16,11 @@
 }
 .add{
     padding: 0 50px 0 0;
+}
+
+.del:hover{
+    background-color: rgb(133, 2, 2) !important;
+}
+.btn-edit:hover{
+    background-color: rgb(151, 99, 2) !important;
 }
