@@ -13,18 +13,20 @@ const EditRoom = () => {
     description: "",
     is_active: "",
   });
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [value, setValue] = useState();
 
   useEffect(() => {
     // Fetch room data from the server based on the ID
     const fetchRoomData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/admin/room/${id}`
+          `https://yusroom.be.sman17gowa.com/api/admin/room/${id}`
         );
         const roomData = response.data.data;
         setData(roomData);
+        console.log(roomData.is_active)
       } catch (error) {
         console.error("Terjadi kesalahan saat mengambil data ruangan:", error);
       }
@@ -36,34 +38,45 @@ const EditRoom = () => {
   const handleInputChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+  
+  const handleChange = e => {
+    setData( prev => ({
+      ...prev,
+      'is_active': e.target.value
+    }))
+  }
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
-    if (file) {
+    const image = e.target.files[0];
+    setImageFile(image);
+
+    if (image) {
       const reader = new FileReader();
-  
+
       reader.onload = () => {
         setImageUrl(reader.result);
       };
-  
-      reader.readAsDataURL(file);
+
+      reader.readAsDataURL(image);
+    } else {
+      setImageUrl(''); // Clear imageUrl if no image is selected
     }
   };
-
   const handleUpdateData = async () => {
     try {
       // Create form data
+
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("description", data.description);
       formData.append("is_active", data.is_active);
-      if (imageFile) {
+      if(imageFile != null ){
         formData.append("image", imageFile);
       }
+    
 
-      const response = await axios.patch(
-        `http://127.0.0.1:8000/api/admin/room/${id}`,
+      const response = await axios.post(
+        `https://yusroom.be.sman17gowa.com/api/admin/room/${id}?_method=patch`,
         formData
       );
       console.log("Data berhasil diperbarui:", response.data);
@@ -107,29 +120,30 @@ const EditRoom = () => {
         onChange={handleInputChange}
         fullWidth
       />
-      <TextField
+      {/* <TextField
         label="Status"
         name="is_active"
         sx={{ mt: 2 }}
         value={data.is_active || ""}
         onChange={handleInputChange}
         fullWidth
-      />
+      /> */}
 
       <FormControl>
         <FormLabel id="demo-radio-buttons-group-label">Status</FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="1"
           name="radio-buttons-group"
-          
+          value={data.is_active}
+          onChange={handleChange}
         >
           <Box sx={{display:"flex"}}>
-          <FormControlLabel value="1" control={<Radio />} label="tersedia" />
-          <FormControlLabel value="0" control={<Radio />} label="Tidak Tersedia" />
+          <FormControlLabel value="1" control={<Radio />}  label="tersedia" />
+          <FormControlLabel value="0" control={<Radio />}  label="Tidak Tersedia" />
           </Box>
         </RadioGroup>
       </FormControl>
+      <br/>
       <Button variant="contained"    sx={{ mt: 2 }} onClick={handleUpdateData}>
         Kirim
       </Button>

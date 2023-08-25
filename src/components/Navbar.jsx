@@ -81,6 +81,7 @@ export default function Navbar() {
         vertical: 'top',
         horizontal: 'right',
       }}
+      
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
@@ -126,7 +127,7 @@ export default function Navbar() {
   );
 
   return (
-    <Box sx={{ flexGrow:0.5 }}>
+    <Box sx={{ flexGrow:0.1 ,bgcolor:'#0264d3'}}>
       <AppBar position="fixed">
         <Toolbar>
           <IconButton

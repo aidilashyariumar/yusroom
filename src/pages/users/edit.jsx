@@ -18,7 +18,7 @@ const EditUser = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/admin/user/${id}`
+          `https://yusroom.be.sman17gowa.com/api/admin/user/${id}`
         );
         const userData = response.data.data;
         setData(userData);
@@ -37,7 +37,7 @@ const EditUser = () => {
   const handleUpdateData = async () => {
     try {
       const response = await axios.patch(
-        `http://127.0.0.1:8000/api/admin/user/${id}`,
+        `https://yusroom.be.sman17gowa.com/api/admin/user/${id}`,
         data
       );
       console.log("Data berhasil diperbarui:", response.data);

@@ -21,14 +21,3 @@
 .btn-edit:hover{
     background-color: rgb(151, 99, 2);
 }
-@media (max-width: 992px){
-    .aksi{
-        display: flex !important;
-        justify-content: space-around;
-    }
-}
-@media (max-width: 576px) {
-    .aksi{
-        display: block;
-    }
-}

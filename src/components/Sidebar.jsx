@@ -69,7 +69,7 @@ export default function MiniDrawer() {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
     
       <Drawer variant="permanent" open={open}>
         <List sx={{marginTop:7}}>

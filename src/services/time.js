@@ -1,13 +1,41 @@
 import axios from "../helper/axios"
 
-const getAllTime = async () => {
-    try{
-        // const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-        const response = await axios.get('/admin/time')
+const getAllTime = async (page = 1, search = '') => {
+
+    try {
+
+        const response = await axios.get(`/admin/time?page=${page}&search=${search}`)
         return response.data
-    } catch(e){
+
+    } catch (e) {
+        console.log(e.response.data)
+    }
+
+}
+
+const createTime= async (data) => {
+
+    try {
+
+        const response = await axios.post(`/admin/time`, data)
+        return response.data
+
+    } catch (e) {
         return e.response.data
     }
+
+}
+const updateTime = async (id, data) => {
+
+    try {
+
+        const response = await axios.put(`/admin/time/${id}`, data)
+        return response.data
+
+    } catch (e) {
+        return e.response.data
+    }
+
 }
 
 const deleteTime = async (id) => {
@@ -22,4 +50,4 @@ const deleteTime = async (id) => {
     }
 
 }
-export {getAllTime,deleteTime}
+export {getAllTime,deleteTime,createTime,updateTime}

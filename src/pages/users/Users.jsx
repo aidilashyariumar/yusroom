@@ -16,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { deleteRoom, getAllUsers } from '../../services/user';
 import {useNavigate} from 'react-router';
-
+import './style.css'
 
 
 const UsersPage = () => {
@@ -55,17 +55,17 @@ const UsersPage = () => {
     }
   };
 
+  
+
 
 
   return (
     <Box>
-     <h1>Users</h1>
-    <Box sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1 , width:'100%'}}>
+  
+    <Box sx={{ backgroundColor: '#1976D2', borderRadius: '10px' , width:'100%',mt:4}}>
       <Grid container spacing={2} sx={{ m: 1 }}>
-        <Grid xs={4}>
-          {/* Search Component */}
-        </Grid>
-        <Grid container justifyContent="flex-end">
+        <Grid container justifyContent="space-between" alignItems='center'>
+          <h2 style={{color:'white'}}>Users</h2>
         <Grid item className="add">
           <Button
             sx={{ borderColor: 'white', color: 'white', }}
@@ -77,7 +77,7 @@ const UsersPage = () => {
         </Grid>
         </Grid>
       </Grid>
-      <TableContainer component={Paper} sx={{ maxHeight: '300px' }}>
+      <TableContainer component={Paper} sx={{ maxHeight: '350px' }}>
         <Table aria-label="YUSROOM" stickyHeader>
           <TableHead sx={{ backgroundColor: 'blue' }}>
             <TableRow>
@@ -96,25 +96,25 @@ const UsersPage = () => {
                 <TableCell align='center'>{item.name}</TableCell>
                 <TableCell align='center'>{item.email}</TableCell>
                 
-                <TableCell align='center'>
+                <TableCell sx={{display:'flex',justifyContent:'center'}}>
+                <Box sx={{display:'flex',justifyContent:'space-between',width:'50%'}}>
                 <Button
-                  startIcon={<EditIcon/>}
                   className="btn-edit"
                   onClick={() => editData(item.id)}
-                  sx={{backgroundColor:'orange', color:'white',marginRight:2}}
+                  sx={{backgroundColor:'orange', color:'white',mt:1}}
                 >
-                  Edit
+                  <EditIcon/>
                 </Button>
-
-                    <Button
-                    variant="contained"
-                    sx={{backgroundColor:'red'}}
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleDelete(item.id)}
-                    className='del'
-                  >
-                    Delete
-                  </Button>
+                <Button
+                  variant="contained"
+                  sx={{bgcolor:'red',mt:1}}
+                  onClick={() => handleDelete(item.id)}
+                  className='del'
+                >
+                  <DeleteIcon/>
+                </Button>  
+                </Box>
+                    
                 </TableCell>
               </TableRow>
             ))}

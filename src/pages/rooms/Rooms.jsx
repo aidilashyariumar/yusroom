@@ -10,6 +10,7 @@ import {
   Button,
   Grid,
   Box,
+  Skeleton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,9 +25,11 @@ const RoomPage = () => {
   const navigate = useNavigate();
   
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false)
   
 
   useEffect(() => {
+    setLoading(true)
     getData();
   }, []);
 
@@ -34,6 +37,7 @@ const RoomPage = () => {
     try {
       const response = await getAllRoom();
       setData(response.data);
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +54,7 @@ const RoomPage = () => {
     try {
       await deleteRoom(id);
       console.log('Data deleted successfully');
+      setLoading(false)
       getData();
     } catch (error) {
       console.error('Error deleting data:', error);
@@ -59,14 +64,12 @@ const RoomPage = () => {
 
 
   return (
-    <Box >
-      <h1>Room</h1>
-    <Box className="container" sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1, width:'100%' }}>
+    <>
+  
+    <Box className="kotak" sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1, width:'100%', mt:4}}>
       <Grid container spacing={2} sx={{ m: 1 }}>
-        <Grid xs={4}>
-          {/* Search Component */}
-        </Grid>
-        <Grid container justifyContent="flex-end">
+        <Grid container justifyContent="space-between" alignItems='center'>
+          <h2 style={{color:'white'}}>Room</h2>
           <Grid item className='add'>
           <Button
             sx={{ borderColor: 'white', color: 'white'  }}
@@ -79,61 +82,88 @@ const RoomPage = () => {
           </Grid>
         </Grid>
       </Grid>
-      <TableContainer component={Paper} sx={{ maxHeight: '300px' }}>
+      <TableContainer component={Paper} sx={{ maxHeight: '350px' }}>
         <Table aria-label="YUSROOM" stickyHeader>
           <TableHead sx={{ backgroundColor: 'blue' }}>
             <TableRow>
-              <TableCell align="center">No</TableCell>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">image</TableCell>
-              <TableCell align="center">Description</TableCell>
-              <TableCell align="center">Status</TableCell>
+              <TableCell >No</TableCell>
+              <TableCell >Name</TableCell>
+              <TableCell align='center' >image</TableCell>
+              <TableCell >Description</TableCell>
+              <TableCell >Status</TableCell>
               <TableCell align="center">Aksi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item,index) => (
-              <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center">{item.name}</TableCell>
-                <TableCell align="center">
-                  <img src={`${item.image}`} width={80} alt="Room" />
-                </TableCell>
-                <TableCell align="center">{item.description}</TableCell>
-                <TableCell align="center">
-                  {item.is_active === 1 ? (
-                    <Box sx={{ backgroundColor: 'pink', color: 'red', width: '60px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">tersedia</Box>
-                  ) : (
-                    <Box sx={{ backgroundColor: 'silver', color: 'white', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">tidak Tersedia</Box>
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                <Button
-                  startIcon={<EditIcon />}
-                  className="btn-edit"
-                  sx={{backgroundColor:'orange', color:'white',marginRight:2}}
-                  onClick={() => editData(item.id)}
-                >
-                  Edit
-                </Button>
+          {loading ? (
+            <>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            </>
+      ) : (
+        data.map((item,index) => (
+          <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableCell >{index + 1}</TableCell>
+            <TableCell >{item.name}</TableCell>
+            <TableCell align="center">
+              <img src={`${item.image}`} width={30} alt="Room" />
+            </TableCell>
+            <TableCell >{item.description}</TableCell>
+            <TableCell align="center">
+              {item.is_active == 1 ? (
+                <Box sx={{ backgroundColor: 'pink', color: 'red', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">Tersedia</Box>
+              ) : (
+                <Box sx={{ backgroundColor: 'silver', color: 'white', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">Tidak Tersedia</Box>
+              )}
+            </TableCell>
+            <TableCell align="center"className='aksi' >
+            
+            <Button
+              // startIcon={}
+              className="btn-edit"
+              sx={{backgroundColor:'orange', color:'white'}}
+              onClick={() => editData(item.id)}
+            >
+              <EditIcon />
+              {/* Edit */}
+            </Button>
 
-                    <Button
-                    variant="contained"
-                    sx={{backgroundColor:'red'}}
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleDelete(item.id)}
-                    className='del'
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                <Button
+                variant="contained"
+                sx={{backgroundColor:'red'}}
+                // startIcon={}
+                onClick={() => handleDelete(item.id)}
+                className='del'
+              >
+                <DeleteIcon />
+                {/* Delete */}
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))
+      )}
+         
           </TableBody>
         </Table>
       </TableContainer>
     </Box>
-    </Box>
+    </>
   );
 };
 

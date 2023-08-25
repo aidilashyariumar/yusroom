@@ -34,6 +34,7 @@ const TimePage = () => {
     try {
       const response = await getAllTime();
       setData(response.data);
+      console.log(response.data)
     } catch (error) {
       console.log(error);
     }
@@ -60,13 +61,11 @@ const TimePage = () => {
 
   return (
     <Box >
-      <h1>Time</h1>
-    <Box sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1, width:'100%'  }}>
+     
+    <Box sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1, width:'100%', mt:4  }}>
       <Grid container spacing={2} sx={{ m: 1 }}>
-        <Grid xs={4}>
-          {/* Search Component */}
-        </Grid>
-        <Grid container justifyContent="flex-end">
+        <Grid container justifyContent="space-between" alignItems='center'>
+        <h2 style={{color:'white'}}>Time</h2>
         <Grid item className="add">
           <Button
             sx={{ borderColor: 'white', color: 'white'}}
@@ -78,7 +77,7 @@ const TimePage = () => {
         </Grid>
         </Grid>
       </Grid>
-      <TableContainer component={Paper} sx={{ maxHeight: '300px' ,display: 'flex', justifyContent: 'center' }}>
+      <TableContainer component={Paper} sx={{ maxHeight: '350px' ,display: 'flex', justifyContent: 'center' }}>
         <Table aria-label="YUSROOM" stickyHeader width='80%' >
           <TableHead sx={{ backgroundColor: 'blue' }}>
             <TableRow >
@@ -94,24 +93,26 @@ const TimePage = () => {
                 <TableCell align="center">{index + 1}</TableCell>
                 <TableCell align="center">{item.start_time}</TableCell>
                 <TableCell align="center" >{item.end_time}</TableCell>
-                <TableCell align="center">
+                <TableCell align="center" sx={{display:'flex',justifyContent:'center'}} >
+                <Box sx={{display:'flex',justifyContent:'space-between',width:'35%'}}>
                 <Button
-                  startIcon={<EditIcon />}
+                  // startIcon={}
                   className="btn-edit"
                   onClick={() => editData(item.id)}
-                  sx={{backgroundColor:'orange', color:'white',marginRight:2}}
+                  sx={{backgroundColor:'orange', color:'white',mt:1}}
                 >
-                  Edit
+                  <EditIcon />
                 </Button>
                 <Button
                     variant="contained"
-                    sx={{backgroundColor:'red'}}
-                    startIcon={<DeleteIcon/>}
+                    sx={{backgroundColor:'red',mt:1}}
+                    // startIcon={}
                     className='del'
                     onClick={() => handleDelete(item.id)}
                   >
-                    Delete
+                    <DeleteIcon/>
                 </Button>
+                </Box>
                 </TableCell>
               </TableRow>
             ))}

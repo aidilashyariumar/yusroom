@@ -1,0 +1,129 @@
+
+body{
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgb(5, 2, 87) , rgb(4, 4, 202) );
+}
+.container{
+    width: 30%;
+    height: 50vh;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    padding: 5px;
+    box-shadow:inset;
+}
+.con{
+    font-size: 80px  !important; 
+  }
+
+@media (max-width: 992px) {
+    .container{
+        height: 30vh;
+        width: 35ch;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 100%);
+      
+    }
+    .icon{
+        width: 10%;
+        height: 60px;
+        margin-top: 19px !important;
+        margin-bottom: 10px !important;
+
+       
+    }
+    .con{
+        font-size: 50px  !important; 
+    }
+   
+  }
+@media (max-width: 768px) {
+    .container{
+        height: 30vh;
+        width: 35ch;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 100%);
+      
+    }
+    .icon{
+        width: 10%;
+        height: 60px;
+        margin-top: 19px !important;
+        margin-bottom: 10px !important;
+
+       
+    }
+    .con{
+        font-size: 50px  !important; 
+    }
+   
+  }
+@media (max-width: 576px) {
+    .container{
+        height: 30vh;
+        width: 35ch;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 100%);
+      
+    }
+    .icon{
+        width: 10%;
+        height: 60px;
+        margin-top: 19px !important;
+        margin-bottom: 10px !important;
+    }
+    .con{
+        font-size: 50px  !important; 
+    }
+  }
+h1{
+    text-align: center;
+}
+.icon{
+    width: 22%;
+    border-radius: 100px;
+    margin: auto;
+    /* height: 50px; */
+    color: rgb(10, 1, 88);
+    background-color: rgba(25, 0, 255, 0.7);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.input{
+    margin: auto;
+    width: 30ch;
+}
+.kata{
+    text-align: center;
+    color: rgb(212, 212, 212);
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
+.user{
+    text-align: center;
+    margin-bottom: 5px;
+}
+@keyframes changeColor {
+    0% { color: rgb(255, 255, 255); }
+    15% { color: rgb(142, 149, 255); }
+    25% { color: rgb(0, 4, 255); }
+    35% { color: rgb(52, 2, 168); }
+    55% { color: rgb(0, 0, 0); }
+    75% { color: rgb(52, 2, 168); }
+    85% { color: rgb(0, 4, 255); }
+    100% { color: rgb(142, 149, 255); }
+  }
+  
+  .user.animated {
+    animation: changeColor 5s infinite;
+  }
+  

@@ -14,9 +14,9 @@ import {
     return (
       <Container maxWidth={false} sx={{ height: '100vh', display: 'flex', p: '0 !important' }} >
           <Sidebar />
-          <Stack sx={{ flex: 1, bgcolor: '#fff', overflowY: 'auto', position: 'relative', boxShadow: 'inset 1px -1px 12px rgba(0, 0, 0, 0.05)', }} >
-            <Navbar/>
-            <Box sx={{ flex: 4, m: 4}} >
+          <Stack sx={{ flex: 4, bgcolor: '#fff', overflowY: 'auto', position: 'relative', boxShadow: 'inset 1px -1px 12px rgba(0, 0, 0, 0.05)', }} >
+            <Navbar />
+            <Box sx={{ flex:2,m:4}} >
                 <Outlet/>
             </Box>
             <Box sx={{ display: 'flex', p: '12px', borderTop: '1px solid #EAEAEA' }} >

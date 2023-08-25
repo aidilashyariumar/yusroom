@@ -1,15 +1,44 @@
 import axios from "../helper/axios"
 
-const getAllRoom = async () => {
-    try{
-        // const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-        const response = await axios.get('/admin/room')
+
+
+const getAllRoom = async (page = 1, search = '') => {
+
+    try {
+
+        const response = await axios.get(`/admin/room?page=${page}&search=${search}`)
         return response.data
-    } catch(e){
-        return e.response.data
+
+    } catch (e) {
+        console.log(e.response.data)
     }
+
 }
 
+const storeRoom = async (data) => {
+
+    try {
+
+        const response = await axios.post(`/admin/room`, data)
+        return response.data
+
+    } catch (e) {
+        return e.response.data
+    }
+
+}
+const updateRoom = async (id, data) => {
+
+    try {
+
+        const response = await axios.put(`/admin/room/${id}`, data)
+        return response.data
+
+    } catch (e) {
+        return e.response.data
+    }
+
+}
 const deleteRoom = async (id) => {
     console.log('id: '+JSON.stringify(id));
     try {
@@ -22,4 +51,4 @@ const deleteRoom = async (id) => {
     }
 
 }
-export {getAllRoom,deleteRoom}
+export {getAllRoom,deleteRoom,storeRoom,updateRoom}
