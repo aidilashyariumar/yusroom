@@ -10,18 +10,22 @@ import {
   Button,
   Grid,
   Box,
+  IconButton,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import { deleteRoom, getAllRoom } from '../../services/room';
 import {useNavigate} from 'react-router';
 import './style.css'
+import { getAllBooking, updateBooking } from '../../services/approve';
+import axios from '../../helper/axios';
 
 
 
 const RoomPage = () => {
   const navigate = useNavigate();
+  const [value, setValue] = useState(0);
   
   const [data, setData] = useState([]);
   
@@ -32,63 +36,55 @@ const RoomPage = () => {
 
   const getData = async () => {
     try {
-      const response = await getAllRoom();
+      const response = await getAllBooking();
       setData(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const editData = (id) => {
-
-    // setSelectedData(e.id)
-
-    navigate(`/edit-room/${id}`)
-  }
-
-  const handleDelete = async (id) => {
+  const handleToggle = async (newValue, id) => {
     try {
-      await deleteRoom(id);
-      console.log('Data deleted successfully');
+      const response = await updateBooking(id, { is_approved: newValue });
+  
+      // Jika respons dari API adalah "success" atau sesuai dengan kebutuhan Anda
+      if (response.data === "success") {
+        // Perbarui status booking yang sesuai dalam data
+        const updatedData = data.map(item =>
+          item.id === id ? { ...item, is_approved: newValue } : item
+        );
+        setData(updatedData);
+      }
       getData();
+      // setData(false)
     } catch (error) {
-      console.error('Error deleting data:', error);
+      console.error("Terjadi kesalahan saat memanggil API:", error);
     }
   };
-
+  
 
 
   return (
     <>
-    <div></div>
-      <h1>Room</h1>
-    <Box className="kotak" sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1, width:'100%' }}>
+    <Box className="kotak" sx={{ backgroundColor: '#1976D2', borderRadius: '10px', pt: 1, width:'100%', mt:4 }}>
       <Grid container spacing={2} sx={{ m: 1 }}>
-        <Grid xs={4}>
-          {/* Search Component */}
-        </Grid>
-        <Grid container justifyContent="flex-end">
-          <Grid item className='add'>
-          <Button
-            sx={{ borderColor: 'white', color: 'white'  }}
-            variant="outlined"
-            
-            onClick={() => {navigate("/add-room")}}
-          >
-            <AddIcon />
-          </Button>
-          </Grid>
+      <Grid container justifyContent="space-between" alignItems='center'>
+        <h2 style={{color:'white'}}>Booking</h2>
         </Grid>
       </Grid>
-      <TableContainer component={Paper} sx={{ maxHeight: '300px' }}>
+      <TableContainer component={Paper} sx={{ maxHeight: '350px' }}>
         <Table aria-label="YUSROOM" stickyHeader>
           <TableHead sx={{ backgroundColor: 'blue' }}>
             <TableRow>
               <TableCell >No</TableCell>
               <TableCell >Name</TableCell>
-              <TableCell align='center' >image</TableCell>
+              <TableCell align='center' >Room Name</TableCell>
+              <TableCell >Image</TableCell>
+              <TableCell >Date</TableCell>
+              <TableCell >start Time</TableCell>
+              <TableCell >End Time</TableCell>
+              <TableCell >Ket</TableCell>
               <TableCell >Description</TableCell>
-              <TableCell >Status</TableCell>
               <TableCell align="center">Aksi</TableCell>
             </TableRow>
           </TableHead>
@@ -96,37 +92,39 @@ const RoomPage = () => {
             {data.map((item,index) => (
               <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell >{index + 1}</TableCell>
-                <TableCell >{item.name}</TableCell>
+                <TableCell >{item.user_name}</TableCell>
+                <TableCell >{item.room_name}</TableCell>
                 <TableCell align="center">
-                  <img src={`${item.image}`} width={30} alt="Room" />
+                  <img src={`${item.room_image}`} width={30} alt="Room" />
                 </TableCell>
+                <TableCell >{item.booking_date}</TableCell>
+                <TableCell >{item.start_time}</TableCell>
+                <TableCell >{item.end_time}</TableCell>
+                <TableCell >{item.is_approved == 1 ? 
+                 <Box sx={{ backgroundColor: 'orange', color: 'white', width: '97px', height: '25px', padding: 0.5, borderRadius: '5px' }} align="center">Diterima</Box>
+                : 
+                  <Box sx={{ backgroundColor: 'red', color: 'white', width: '97px', height: '35px', padding: 0.5, borderRadius: '5px' }} align="center">Belum Diterima</Box>
+                }</TableCell>
                 <TableCell >{item.description}</TableCell>
                 <TableCell align="center">
-                  {item.is_active === 1 ? (
-                    <Box sx={{ backgroundColor: 'pink', color: 'red', width: '60px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">tersedia</Box>
-                  ) : (
-                    <Box sx={{ backgroundColor: 'silver', color: 'white', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">tidak Tersedia</Box>
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                <Button
-                  startIcon={<EditIcon />}
+                <Box sx={{display:'flex',justifyContent:'space-evenly',width:'100%'}}>
+                <IconButton
+                  // startIcon={<EditI />}
                   className="btn-edit"
                   sx={{backgroundColor:'orange', color:'white',marginRight:2}}
-                  onClick={() => editData(item.id)}
+                  onClick={() => handleToggle(1,item.id)}
                 >
-                  Edit
-                </Button>
-
-                    <Button
-                    variant="contained"
-                    sx={{backgroundColor:'red'}}
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleDelete(item.id)}
-                    className='del'
-                  >
-                    Delete
-                  </Button>
+                  <CheckCircleOutlineRoundedIcon/>
+                </IconButton>
+                <IconButton
+                  // startIcon={<EditI />}
+                  className="btn-edit"
+                  sx={{backgroundColor:'red', color:'white'}}
+                  onClick={() => handleToggle(0,item.id)}
+                >
+                    <HighlightOffRoundedIcon/>
+                </IconButton>
+              </Box>
                 </TableCell>
               </TableRow>
             ))}

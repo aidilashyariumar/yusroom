@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "../../helper/axios";
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
+import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
 // import { Radio } from "@mui/icons-material";
+import {Input, InputLabel } from "@mui/material";
+
+
 
 const EditRoom = () => {
   const navigate = useNavigate();
@@ -39,6 +42,12 @@ const EditRoom = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   
+  
+    const [selectedFile, setSelectedFile] = useState(null);
+  
+    // const handleImageChange = (event) => {
+    //   setSelectedFile(event.target.files[0]);
+    // };
   const handleChange = e => {
     setData( prev => ({
       ...prev,
@@ -93,10 +102,10 @@ const EditRoom = () => {
   return (
       <Box xs={8} sx={{ mt: 5, minHeight:300}} >
     <Box>
-       <Box className="box-title" sx={{ marginBottom: '-20px' }} >
-        <h2>Edit Ruangan Rapat</h2>
+       <Box className="box-titl" sx={{ marginBottom: '-20px' }} >
+        <h2>Edit Ruangan</h2>
       </Box>
-      <Box className="box-add" >
+      <Box className="box-ad" >
       <TextField
         label="Nama"
         name="name"
@@ -106,11 +115,29 @@ const EditRoom = () => {
         fullWidth
       />
       <Box  sx={{ mt: 2 }}>
-        <label htmlFor="image" > Gambar</label> <br />
+        {/* <label htmlFor="image" > Gambar</label> <br /> */}
         <img src={data.image} width={100} /> 
       {imageUrl && <img width={100} sx={{margin:'5px'}} src={imageUrl} alt="Room"  />} <br/>
-      <input type="file"   accept="image/*" onChange={handleImageChange} />
-      
+      <InputLabel htmlFor="upload-button">
+        Upload Gambar
+      </InputLabel>
+      <Input
+        id="upload-button"
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleImageChange}
+      />
+      <label htmlFor="upload-button">
+        <Button
+          variant="contained"
+          component="span"
+        >
+          Pilih Gambar
+        </Button>
+      </label>
+      {selectedFile && <p>File terpilih: {selectedFile.name}</p>}
+  
       </Box>
       <TextField
         label="Deskripsi"
@@ -143,10 +170,11 @@ const EditRoom = () => {
           </Box>
         </RadioGroup>
       </FormControl>
-      <br/>
-      <Button variant="contained"    sx={{ mt: 2 }} onClick={handleUpdateData}>
-        Kirim
-      </Button>
+      <Grid>
+        <Button variant="contained"    sx={{ mt: 2 }} onClick={handleUpdateData}>
+          Kirim
+        </Button>
+      </Grid>
       </Box>
       </Box>
     </Box>

@@ -1,86 +1,99 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import { Box, Button, TextField } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import { createTime } from "../../services/time";
 
 const AddTime = () => {
   const navigate = useNavigate();
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [data, setData] = useState({
+    start_time: "",
+    end_time: "",
+  });
 
-  const handleStartTimeChange = (time) => {
-    
-    setStartTime(time);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleEndTimeChange = (time) => {
-    setEndTime(time);
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form behavior
+    setIsLoading(true);
+    setError(""); // Clear previous errors
 
-  const handleAddData = async () => {
     try {
-      // Convert start_time and end_time to desired format before sending to the server
-      console.log(`${startTime.hour()} : ${startTime.minute()}`);
-      const formattedStartTime = `${startTime.hour()}:${startTime.minute()}`;
-      const formattedEndTime = `${endTime.hour()}:${endTime.minute()}`;
-      // Create form data
-      const formData = new FormData();
-      formData.append("start_time", formattedStartTime);
-      formData.append("end_time", formattedEndTime);
+      const response = await createTime({
+        start_time: data.start_time,
+        end_time: data.end_time,
+      });
 
-      console.log(formattedStartTime);
+      setIsLoading(false);
+      
+      navigate("/time"); // Redirect to time page after successful addition
+      if (!response.data.success) {
+        setError(response.data.message); // Set error message
+        return;
+      }
 
-      const response = await createTime(formData);
-      console.log("Data berhasil ditambahkan:", response.data);
-      navigate("/time");
-
-      setEndTime({
+      setData({
+        start_time: "",
         end_time: "",
       });
-      setStartTime({
-        start_time: "",
-      });
+
     } catch (error) {
-      console.error("Terjadi kesalahan saat menambahkan data:", error);
+      console.error("An error occurred while adding data:", error);
+      setError("An error occurred while adding time."); // Set error message
+      setIsLoading(false);
     }
   };
 
   return (
-    <Box>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <h2>Tambah Data Waktu</h2>
-        <Box sx={{ m: 5 }}>
-          <TimePicker
-            fullWidth
-            label="Start Time"
-            value={startTime}
-            onChange={handleStartTimeChange}
-            format="HH:mm"
-            renderInput={(params) => <TextField {...params} />}
-            sx={{ display: "block", m: 2, width: "60%" }}
-          />
-          <TimePicker
-            label="End Time"
-            value={endTime}
-            onChange={handleEndTimeChange}
-            format="HH:mm"
-            renderInput={(params) => <TextField {...params} />}
-            sx={{ display: "block", m: 2, width: "60%" }}
-            fullWidth
-          />
-          <Button
-            variant="contained"
-            sx={{ m: 2, width: "60%" }}
-            onClick={handleAddData}
-            fullWidth
-          >
-            Tambah
-          </Button>
-        </Box>
-      </LocalizationProvider>
+    <Box sx={{mt:10 }} alignItems="center">
+      <h2  align="center">Tambah Data Waktu</h2>
+      <Box >
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center'}}>
+              <TextField
+                type="time"
+                name="start_time"
+                value={data.start_time}
+                onChange={handleInputChange}
+                inputProps={{ step: 300 }}
+                sx={{mt:2,width:'25%' }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center'}}>
+              <TextField
+                type="time"
+                name="end_time"
+                value={data.end_time}
+                onChange={handleInputChange}
+                inputProps={{ step: 300 }}
+                sx={{mt:2,width:'25%' }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center'}}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ m: 2, width: "25%" }}
+                fullWidth
+              >
+                {isLoading ? "Menambahkan..." : "Tambah"}
+              </Button>
+            </Grid>
+            {error && (
+              <Grid item xs={12}>
+                <p style={{ color: "red" }}>{error}</p>
+              </Grid>
+            )}
+          </Grid>
+        </form>
+      </Box>
     </Box>
   );
 };

@@ -44,12 +44,12 @@ body{
   }
 @media (max-width: 768px) {
     .container{
-        height: 30vh;
+        height: 60vh;
         width: 35ch;
         position: relative;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, 50%);
       
     }
     .icon{
@@ -67,12 +67,12 @@ body{
   }
 @media (max-width: 576px) {
     .container{
-        height: 30vh;
+        height: 45vh;
         width: 35ch;
         position: relative;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, 50%);
       
     }
     .icon{

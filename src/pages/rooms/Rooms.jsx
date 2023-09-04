@@ -11,6 +11,7 @@ import {
   Grid,
   Box,
   Skeleton,
+  IconButton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -91,13 +92,13 @@ const RoomPage = () => {
               <TableCell align='center' >image</TableCell>
               <TableCell >Description</TableCell>
               <TableCell >Status</TableCell>
-              <TableCell align="center">Aksi</TableCell>
+              <TableCell align='center'>Aksi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
           {loading ? (
             <>
-            <TableCell>
+            <TableCell key="loading">
               <Skeleton animation="wave"  />
             </TableCell>
             <TableCell>
@@ -132,28 +133,23 @@ const RoomPage = () => {
                 <Box sx={{ backgroundColor: 'silver', color: 'white', width: '97px', height: '30px', padding: 0.5, borderRadius: '5px' }} align="center">Tidak Tersedia</Box>
               )}
             </TableCell>
-            <TableCell align="center"className='aksi' >
+            <TableCell align="center" sx={{display:'flex',justifyContent:'center'}} >
             
-            <Button
-              // startIcon={}
-              className="btn-edit"
-              sx={{backgroundColor:'orange', color:'white'}}
-              onClick={() => editData(item.id)}
-            >
-              <EditIcon />
-              {/* Edit */}
-            </Button>
-
-                <Button
-                variant="contained"
-                sx={{backgroundColor:'red'}}
-                // startIcon={}
-                onClick={() => handleDelete(item.id)}
-                className='del'
-              >
-                <DeleteIcon />
-                {/* Delete */}
-              </Button>
+            <Box sx={{display:'flex',justifyContent:'space-evenly',width:'100%'}}>
+                <IconButton
+                  className="btn-edit"
+                  onClick={() => editData(item.id)}
+                  sx={{backgroundColor:'orange', color:'white',mt:1}}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  onClick={() => handleDelete(item.id)}
+                  sx={{backgroundColor:'red', color:'white',mt:1}}
+                >
+                    <DeleteIcon/>
+                </IconButton>
+                </Box>
             </TableCell>
           </TableRow>
         ))

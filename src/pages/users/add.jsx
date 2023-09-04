@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, TextField, Box } from '@mui/material';
-import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { storeUser } from '../../services/user';
+import './style.css'
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -60,11 +60,11 @@ const AddUser = () => {
   };
 
   return (
-    <Box>
-      <Box className="box-title" sx={{ backgroundColor: 'blue', marginBottom: '-20px' }} width="90%">
+    <Box sx={{mt:5}}>
+      <Box className="box-titl" sx={{ marginBottom: '-20px' }} >
         <h2>Tambah Data</h2>
       </Box>
-      <Box className="box-add">
+      <Box className="box-ad">
         <form onSubmit={handleSubmit}>
           <TextField sx={{ mt: 2 }} label="Username" name="username" value={data.username} onChange={handleInputChange} fullWidth />
           <TextField sx={{ mt: 2 }} label="Name" name="name" value={data.name} onChange={handleInputChange} fullWidth />

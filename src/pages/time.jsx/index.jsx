@@ -10,6 +10,13 @@ import {
   Button,
   Grid,
   Box,
+  IconButton,
+  Skeleton,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -17,6 +24,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { deleteRoom, deleteTime, getAllTime } from '../../services/time';
 import {useNavigate} from 'react-router';
 import './style.css'
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+
 
 
 
@@ -24,9 +33,13 @@ const TimePage = () => {
   const navigate = useNavigate();
   
   const [data, setData] = useState([]);
+  const [loading,setLoading] = useState();
+  const [open, setOpen] = React.useState(false);
+
   
 
   useEffect(() => {
+    setLoading(true)
     getData();
   }, []);
 
@@ -34,6 +47,7 @@ const TimePage = () => {
     try {
       const response = await getAllTime();
       setData(response.data);
+      setLoading(false)
       console.log(response.data)
     } catch (error) {
       console.log(error);
@@ -51,10 +65,19 @@ const TimePage = () => {
     try {
       await deleteTime(id);
       console.log('Data deleted successfully');
+      setOpen(false)
       getData();
     } catch (error) {
       console.error('Error deleting data:', error);
     }
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
 
@@ -88,34 +111,70 @@ const TimePage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item,index) => (
+          {loading ? (
+            <>
+            <TableCell key="loading">
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            </>
+      ) : (
+            data.map((item,index) => (
               <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell align="center">{index + 1}</TableCell>
                 <TableCell align="center">{item.start_time}</TableCell>
                 <TableCell align="center" >{item.end_time}</TableCell>
                 <TableCell align="center" sx={{display:'flex',justifyContent:'center'}} >
-                <Box sx={{display:'flex',justifyContent:'space-between',width:'35%'}}>
-                <Button
+                <Box sx={{display:'flex',justifyContent:'space-evenly',width:'35%'}}>
+                <IconButton
                   // startIcon={}
                   className="btn-edit"
                   onClick={() => editData(item.id)}
                   sx={{backgroundColor:'orange', color:'white',mt:1}}
                 >
                   <EditIcon />
+                </IconButton>
+            <IconButton color="inherit" onClick={handleOpen}  sx={{backgroundColor:'red', color:'white',mt:1}}>
+              <DeleteIcon/>
+            </IconButton>
+            <Dialog open={open} onClose={handleClose} 
+            BackdropProps={{
+                sx: {
+                  backgroundColor: "rgba(0, 0, 0, 0.5)", // Ubah warna latar belakang di sini
+                },
+              }}>
+              <DialogTitle>Hapus</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Apakah Anda yakin ingin menghapus data?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Batal
                 </Button>
                 <Button
-                    variant="contained"
-                    sx={{backgroundColor:'red',mt:1}}
-                    // startIcon={}
-                    className='del'
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    <DeleteIcon/>
+                  // startIcon={}
+                  onClick={() => handleDelete(item.id)}
+                >
+                  hapus
                 </Button>
+              </DialogActions>
+            </Dialog>
+               
                 </Box>
                 </TableCell>
               </TableRow>
-            ))}
+          ))
+        )}
           </TableBody>
         </Table>
       </TableContainer>

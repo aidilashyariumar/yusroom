@@ -1,22 +1,27 @@
-.box-add{
-    box-shadow: 1px 1px 5px rgb(109, 108, 108) ;
+.box-ad{
+    box-shadow: 1px 4px 5px rgb(109, 108, 108) ;
     padding: 10px;
     border-radius: 10px;
-    /* border: 0 auto 0 auto; */
+    border: 0 auto 0 auto;
     margin: 10px 0 0 0;
 }
-.box-title{
+.box-titl{
     border-radius: 10px;
     color: white;
-    background-color: rgb(3, 3, 179);
+    background-color: #1976D2 !important;
     padding: 1px 5px;
     margin-bottom: -20px;
 }
 .add{
     padding: 0 50px 0 0;
 }
+
 .del:hover{
     background-color: rgb(133, 2, 2) !important;
+}
+.MuiBox-root .css-1a2hhts{
+    width: 50px;
+    height: 30px;
 }
 .btn-edit:hover{
     background-color: rgb(151, 99, 2);

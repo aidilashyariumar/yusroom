@@ -12,6 +12,18 @@ const getAllTime = async (page = 1, search = '') => {
     }
 
 }
+const getIdTime = async (id) => {
+
+    try {
+
+        const response = await axios.get(`/admin/time/${id}`)
+        return response.data
+
+    } catch (e) {
+        console.log(e.response.data)
+    }
+
+}
 
 const createTime= async (data) => {
 
@@ -50,4 +62,4 @@ const deleteTime = async (id) => {
     }
 
 }
-export {getAllTime,deleteTime,createTime,updateTime}
+export {getAllTime,deleteTime,createTime,updateTime,getIdTime}

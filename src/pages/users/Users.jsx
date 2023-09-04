@@ -10,6 +10,8 @@ import {
   Button,
   Grid,
   Box,
+  IconButton,
+  Skeleton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,9 +25,11 @@ const UsersPage = () => {
   const navigate = useNavigate();
   
   const [data, setData] = useState([]);
+  const [loading,setLoading] = useState()
   
 
   useEffect(() => {
+    setLoading(true)
     getData();
   }, []);
 
@@ -33,6 +37,7 @@ const UsersPage = () => {
     try {
       const response = await getAllUsers();
       setData(response.data);
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +94,26 @@ const UsersPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item,index) => (
+          {loading ? (
+            <>
+            <TableCell key="loading">
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave"  />
+            </TableCell>
+            </>
+      ) : (
+            data.map((item,index) => (
               <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell align='center'>{index + 1}</TableCell>
                 <TableCell align='center'>{item.username}</TableCell>
@@ -97,27 +121,27 @@ const UsersPage = () => {
                 <TableCell align='center'>{item.email}</TableCell>
                 
                 <TableCell sx={{display:'flex',justifyContent:'center'}}>
-                <Box sx={{display:'flex',justifyContent:'space-between',width:'50%'}}>
-                <Button
+                <Box sx={{display:'flex',justifyContent:'space-evenly',width:'50%'}}>
+                <IconButton
                   className="btn-edit"
                   onClick={() => editData(item.id)}
                   sx={{backgroundColor:'orange', color:'white',mt:1}}
                 >
                   <EditIcon/>
-                </Button>
-                <Button
-                  variant="contained"
-                  sx={{bgcolor:'red',mt:1}}
+                </IconButton>
+                <IconButton
+                  className="btn-edit"
                   onClick={() => handleDelete(item.id)}
-                  className='del'
+                  sx={{backgroundColor:'red', color:'white',mt:1}}
                 >
                   <DeleteIcon/>
-                </Button>  
+                </IconButton>
                 </Box>
                     
                 </TableCell>
               </TableRow>
-            ))}
+            ))
+          )}
           </TableBody>
         </Table>
       </TableContainer>
