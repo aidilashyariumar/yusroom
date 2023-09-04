@@ -12,6 +12,11 @@ import {
   Box,
   IconButton,
   Skeleton,
+  DialogActions,
+  DialogContentText,
+  DialogContent,
+  DialogTitle,
+  Dialog,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -26,6 +31,7 @@ const UsersPage = () => {
   
   const [data, setData] = useState([]);
   const [loading,setLoading] = useState()
+  const [open, setOpen] = React.useState(false);
   
 
   useEffect(() => {
@@ -54,13 +60,21 @@ const UsersPage = () => {
     try {
       await deleteRoom(id);
       console.log('Data deleted successfully');
+      setOpen(false)
       getData();
     } catch (error) {
       console.error('Error deleting data:', error);
     }
   };
 
-  
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
 
 
@@ -129,13 +143,33 @@ const UsersPage = () => {
                 >
                   <EditIcon/>
                 </IconButton>
-                <IconButton
-                  className="btn-edit"
+                <IconButton color="inherit" onClick={handleOpen}  sx={{backgroundColor:'red', color:'white',mt:1}}>
+              <DeleteIcon/>
+            </IconButton>
+            <Dialog open={open} onClose={handleClose} 
+            BackdropProps={{
+                sx: {
+                  backgroundColor: "rgba(0, 0, 0, 0.5)", // Ubah warna latar belakang di sini
+                },
+              }}>
+              <DialogTitle>Hapus</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Apakah Anda yakin ingin menghapus data?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Batal
+                </Button>
+                <Button
+                  // startIcon={}
                   onClick={() => handleDelete(item.id)}
-                  sx={{backgroundColor:'red', color:'white',mt:1}}
                 >
-                  <DeleteIcon/>
-                </IconButton>
+                  hapus
+                </Button>
+              </DialogActions>
+            </Dialog>
                 </Box>
                     
                 </TableCell>
